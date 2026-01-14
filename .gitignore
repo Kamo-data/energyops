@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+run.log
+
+# Données perso : on ignore tout...
+data/raw/*.csv
+# ... sauf le fichier de démo fourni au recruteur
+!data/raw/sample_releves_mensuelles.csv

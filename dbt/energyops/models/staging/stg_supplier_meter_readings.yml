@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: stg_supplier_meter_readings
+    columns:
+      - name: period_start
+        tests: [not_null]
+      - name: period_end
+        tests: [not_null]
+      - name: cadran
+        tests: [not_null]
+      - name: kwh
+        tests: [not_null]

@@ -1,0 +1,12 @@
+energyops:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: energy
+      password: energy
+      port: 5432
+      dbname: energyops
+      schema: analytics
+      threads: 4

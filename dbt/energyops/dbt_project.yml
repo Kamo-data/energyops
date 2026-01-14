@@ -1,0 +1,14 @@
+name: "energyops"
+version: "1.0.0"
+config-version: 2
+
+profile: "energyops"
+
+model-paths: ["models"]
+
+models:
+  energyops:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
