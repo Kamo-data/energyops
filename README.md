@@ -61,6 +61,7 @@ CSV fournisseur
 À la racine du projet :
 → `docker compose up -d`
 → `docker compose ps`
+
 2) Charger un CSV (exemple)
 Dépose un export CSV dans data/raw/ (ex: sample_releve_mensuelles.csv).
 
@@ -144,3 +145,4 @@ Exposition métriques via API / export CSV
 👤 Auteur
 David Limoisin — Data Engineer
 Projet personnel orienté industrialisation, SQL/ETL, data quality, reproductibilité.
+
