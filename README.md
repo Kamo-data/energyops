@@ -61,22 +61,21 @@ CSV fournisseur
 À la racine du projet :
 → `docker compose up -d`
 → `docker compose ps`
-
-2) Charger un CSV (exemple)
+### 2) Charger un CSV (exemple)
 Dépose un export CSV dans data/raw/ (ex: sample_releve_mensuelles.csv).
 
 Puis lance le script d’ingestion (Windows PowerShell) :
 
 → `powershell -ExecutionPolicy Bypass -File .\scripts\run_all.ps1`
-3) Construire les modèles dbt + lancer les tests (dans Docker)
+### 3) Construire les modèles dbt + lancer les tests (dans Docker)
 
 → `docker compose run --rm dbt run`
 → `docker compose run --rm dbt test`
-4) Vérifier dans PostgreSQL (optionnel)
+### 4) Vérifier dans PostgreSQL (optionnel)
 
 → `docker compose exec postgres psql -U energy -d energyops -c "select count(*) from raw.supplier_meter_readings;"`
 → `docker compose exec postgres psql -U energy -d energyops -c "select * from analytics.agg_energy_calendar_month_est order by month desc limit 12;"`
-5) Ouvrir Metabase
+### 5) Ouvrir Metabase
 Metabase :
 
 http://localhost:3001
@@ -93,7 +92,7 @@ User : energy
 
 Password : energy
 
-🧰 Structure du repo
+## 🧰 Structure du repo
 ingest/ : ingestion Python du CSV fournisseur
 
 postgres/init.sql : init DB (schemas/tables)
@@ -106,7 +105,7 @@ docker-compose.yml : stack Postgres + dbt + Metabase
 
 scripts/run_all.ps1 : pipeline local (ingest + dbt)
 
-🛠️ Runbook / Troubleshooting (problèmes fréquents)
+## 🛠️ Runbook / Troubleshooting (problèmes fréquents)
 Port Metabase déjà pris (3000)
 Metabase est mappé sur 3001:3000.
 Si présence de conflit, changer le port hôte dans docker-compose.yml, ex:
@@ -131,7 +130,7 @@ Utiliser :
 Docker Desktop / virtualisation
 Si Docker ne démarre pas, vérifier que la virtualisation est activée (BIOS / Windows Features / WSL2).
 
-📈 Idées d’évolutions
+## 📈 Idées d’évolutions
 Support multi-énergies (gaz / eau) et multi-compteurs
 
 Historisation des tarifs (HP/HC) par date d’effet
@@ -142,7 +141,12 @@ Orchestration planifiée (cron/Task Scheduler) + logs structurés
 
 Exposition métriques via API / export CSV
 
-👤 Auteur
+
+
+
+
+## 👤 Auteur
 David Limoisin — Data Engineer
 Projet personnel orienté industrialisation, SQL/ETL, data quality, reproductibilité.
+
 
