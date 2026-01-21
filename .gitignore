@@ -1,12 +1,34 @@
+# Python
 .venv/
 __pycache__/
-*.pyc
+*.py[cod]
+
+# Logs
+*.log
 run.log
 
-# Données perso : on ignore tout...
-data/raw/*.csv
-dbt/energyops/dbt/taget
-dbt/energyops/dbt/logs
-dbt/energyops/.user.yml
+# Secrets / local config
+.env
+.env.*
+!.env.example
+
+# Données brutes : on ignore tout...
+data/raw/*
+!data/raw/.gitkeep
 # ... sauf le fichier de démo fourni au recruteur
 !data/raw/sample_releves_mensuelles.csv
+
+# dbt : artefacts générés
+dbt/**/target/
+dbt/**/logs/
+dbt/**/dbt_packages/
+dbt/**/.user.yml
+
+# IDE / OS (optionnel mais propre)
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docker override local (optionnel)
+docker-compose.override.yml
