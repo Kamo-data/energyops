@@ -5,5 +5,8 @@ run.log
 
 # Données perso : on ignore tout...
 data/raw/*.csv
+dbt/energyops/dbt/taget
+dbt/energyops/dbt/logs
+dbt/energyops/.user.yml
 # ... sauf le fichier de démo fourni au recruteur
 !data/raw/sample_releves_mensuelles.csv
