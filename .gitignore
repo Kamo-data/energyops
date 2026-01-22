@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # Python
-=======
-﻿# Python
->>>>>>> 22ba5d8 (chore: ignore dbt artifacts and keep data/raw structure)
 .venv/
 __pycache__/
 *.py[cod]
@@ -16,13 +12,13 @@ run.log
 .env.*
 !.env.example
 
-# Données brutes : on ignore tout...
+# DonnÃ©es brutes : on ignore tout...
 data/raw/*
 !data/raw/.gitkeep
-# ... sauf le fichier de démo fourni au recruteur
+# ... sauf le fichier de dÃ©mo fourni au recruteur
 !data/raw/sample_releves_mensuelles.csv
 
-# dbt : artefacts générés
+# dbt : artefacts gÃ©nÃ©rÃ©s
 dbt/**/target/
 dbt/**/logs/
 dbt/**/dbt_packages/

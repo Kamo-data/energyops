@@ -1,81 +1,80 @@
-<<<<<<< HEAD
-# EnergyOps — Suivi conso électricité (CSV fournisseur → Postgres → dbt → Metabase)
+# EnergyOps â€” Suivi conso Ã©lectricitÃ© (CSV fournisseur â†’ Postgres â†’ dbt â†’ Metabase)
 
-Projet personnel **EnergyOps** : automatiser le suivi de consommation électrique à partir d’un export CSV fournisseur, en construisant une mini-plateforme data **reproductible** (Docker) avec **ingestion → stockage → modélisation dbt → tests → dashboard Metabase**.
+Projet personnel **EnergyOps** : automatiser le suivi de consommation Ã©lectrique Ã  partir dâ€™un export CSV fournisseur, en construisant une mini-plateforme data **reproductible** (Docker) avec **ingestion â†’ stockage â†’ modÃ©lisation dbt â†’ tests â†’ dashboard Metabase**.
 
 ![Dashboard EnergyOps](docs/screenshots/Dashboard.png)
 
 ---
 
-## 🎯 Objectifs
-- Centraliser et historiser mes relevés mensuels (HP/HC)
-- Calculer des métriques utiles : kWh total, kWh/jour estimé, coût estimé
+## ðŸŽ¯ Objectifs
+- Centraliser et historiser mes relevÃ©s mensuels (HP/HC)
+- Calculer des mÃ©triques utiles : kWh total, kWh/jour estimÃ©, coÃ»t estimÃ©
 - Obtenir un dashboard exploitable dans la vie quotidienne (pilotage de la conso)
-- Démontrer une approche “Data Engineering” : pipeline reproductible, data modeling, quality checks
+- DÃ©montrer une approche â€œData Engineeringâ€ : pipeline reproductible, data modeling, quality checks
 
 ---
 
-## 🧱 Stack
+## ðŸ§± Stack
 - **Python** : ingestion CSV + upsert (idempotent)
 - **PostgreSQL** : stockage (raw + analytics)
 - **dbt** : staging/marts + tests
 - **Metabase** : visualisation / dashboard
-- **Docker Compose** : reproductibilité de l’environnement
+- **Docker Compose** : reproductibilitÃ© de lâ€™environnement
 
 ---
 
-## 🏗️ Architecture (simplifiée)
+## ðŸ—ï¸ Architecture (simplifiÃ©e)
 
 CSV fournisseur  
-→ **Python ingest**  
-→ `raw.supplier_meter_readings` (Postgres)
+â†’ **Python ingest**  
+â†’ `raw.supplier_meter_readings` (Postgres)
 
 `raw.supplier_meter_readings`  
-→ **dbt staging**  
-→ `analytics.stg_supplier_meter_readings`
+â†’ **dbt staging**  
+â†’ `analytics.stg_supplier_meter_readings`
 
 `analytics.stg_supplier_meter_readings`  
-→ **dbt marts**  
-→ `analytics.fct_energy_period` (par période)  
-→ `analytics.agg_energy_calendar_month_est` (agrégé mensuel)
+â†’ **dbt marts**  
+â†’ `analytics.fct_energy_period` (par pÃ©riode)  
+â†’ `analytics.agg_energy_calendar_month_est` (agrÃ©gÃ© mensuel)
 
-→ **Metabase dashboards**
+â†’ **Metabase dashboards**
 
 ---
 
-## 📦 Modèles dbt (cibles)
+## ðŸ“¦ ModÃ¨les dbt (cibles)
 - **`analytics.fct_energy_period`**  
-  Agrégation par période de relevé : HP, HC, total, jours couverts, kWh/jour, coût estimé.
+  AgrÃ©gation par pÃ©riode de relevÃ© : HP, HC, total, jours couverts, kWh/jour, coÃ»t estimÃ©.
 - **`analytics.agg_energy_calendar_month_est`**  
-  Agrégation mensuelle (estimation) : kWh, coût, nombre de jours couverts.
+  AgrÃ©gation mensuelle (estimation) : kWh, coÃ»t, nombre de jours couverts.
 
 ---
 
-## ✅ Qualité / Tests
-- Tests dbt `not_null` sur les champs clés (staging)
-- Pipeline pensé pour être **rejouable** (idempotence côté ingestion)
+## âœ… QualitÃ© / Tests
+- Tests dbt `not_null` sur les champs clÃ©s (staging)
+- Pipeline pensÃ© pour Ãªtre **rejouable** (idempotence cÃ´tÃ© ingestion)
 
 ---
 
-## 🚀 Démarrage rapide (Docker)
+## ðŸš€ DÃ©marrage rapide (Docker)
 ### 1) Lancer la stack
-À la racine du projet :
-→ `docker compose up -d`
-→ `docker compose ps`
+Ã€ la racine du projet :
+â†’ `docker compose up -d`
+â†’ `docker compose ps`
 ### 2) Charger un CSV (exemple)
-Dépose un export CSV dans data/raw/ (ex: sample_releve_mensuelles.csv).
+DÃ©pose un export CSV dans data/raw/ (ex: sample_releve_mensuelles.csv).
 
-Puis lance le script d’ingestion (Windows PowerShell) :
+Puis lance le script dâ€™ingestion (Windows PowerShell) :
 
-→ `powershell -ExecutionPolicy Bypass -File .\scripts\run_all.ps1`
-### 3) Construire les modèles dbt + lancer les tests (dans Docker)
+â†’ `powershell -ExecutionPolicy Bypass -File .\scripts\run_all.ps1`
+### 3) Construire les modÃ¨les dbt + lancer les tests (dans Docker)
 
-→ `docker compose run --rm dbt run`
-→ `docker compose run --rm dbt test`
-### 4) Vérifier dans PostgreSQL (optionnel)
+â†’ `docker compose run --rm dbt run`
+â†’ `docker compose run --rm dbt test`
+### 4) VÃ©rifier dans PostgreSQL (optionnel)
 
-→ `docker compose exec postgres psql -U energy -d energyops -c "select count(*) from raw.supplier_meter_readings;"`
-→ `docker compose exec postgres psql -U energy -d energyops -c "select * from analytics.agg_energy_calendar_month_est order by month desc limit 12;"`
+â†’ `docker compose exec postgres psql -U energy -d energyops -c "select count(*) from raw.supplier_meter_readings;"`
+â†’ `docker compose exec postgres psql -U energy -d energyops -c "select * from analytics.agg_energy_calendar_month_est order by month desc limit 12;"`
 ### 5) Ouvrir Metabase
 Metabase :
 
@@ -93,7 +92,7 @@ User : energy
 
 Password : energy
 
-## 🧰 Structure du repo
+## ðŸ§° Structure du repo
 ingest/ : ingestion Python du CSV fournisseur
 
 postgres/init.sql : init DB (schemas/tables)
@@ -106,78 +105,48 @@ docker-compose.yml : stack Postgres + dbt + Metabase
 
 scripts/run_all.ps1 : pipeline local (ingest + dbt)
 
-## 🛠️ Runbook / Troubleshooting (problèmes fréquents)
-Port Metabase déjà pris (3000)
-Metabase est mappé sur 3001:3000.
-Si présence de conflit, changer le port hôte dans docker-compose.yml, ex:
+## ðŸ› ï¸ Runbook / Troubleshooting (problÃ¨mes frÃ©quents)
+Port Metabase dÃ©jÃ  pris (3000)
+Metabase est mappÃ© sur 3001:3000.
+Si prÃ©sence de conflit, changer le port hÃ´te dans docker-compose.yml, ex:
 
 3002:3000
 
 Puis relancer :
 
-→ `docker compose down`
-→ `docker compose up -d`
-dbt: erreur liée à un ; dans un modèle SQL
-En dbt, on évite souvent les ; en fin de requête dans models/*.sql.
+â†’ `docker compose down`
+â†’ `docker compose up -d`
+dbt: erreur liÃ©e Ã  un ; dans un modÃ¨le SQL
+En dbt, on Ã©vite souvent les ; en fin de requÃªte dans models/*.sql.
 Supprime le ; et relance :
 
-→ `docker compose run --rm dbt run`
-PowerShell bloque l’activation / scripts
-L’exécution de scripts peut être désactivée.
+â†’ `docker compose run --rm dbt run`
+PowerShell bloque lâ€™activation / scripts
+Lâ€™exÃ©cution de scripts peut Ãªtre dÃ©sactivÃ©e.
 Utiliser :
 
 
-→ `powershell -ExecutionPolicy Bypass -File .\scripts\run_all.ps1`
+â†’ `powershell -ExecutionPolicy Bypass -File .\scripts\run_all.ps1`
 Docker Desktop / virtualisation
-Si Docker ne démarre pas, vérifier que la virtualisation est activée (BIOS / Windows Features / WSL2).
+Si Docker ne dÃ©marre pas, vÃ©rifier que la virtualisation est activÃ©e (BIOS / Windows Features / WSL2).
 
-## 📈 Idées d’évolutions
-Support multi-énergies (gaz / eau) et multi-compteurs
+## ðŸ“ˆ IdÃ©es dâ€™Ã©volutions
+Support multi-Ã©nergies (gaz / eau) et multi-compteurs
 
-Historisation des tarifs (HP/HC) par date d’effet
+Historisation des tarifs (HP/HC) par date dâ€™effet
 
 Ajout de tests dbt unique, accepted_values, relationships
 
-Orchestration planifiée (cron/Task Scheduler) + logs structurés
+Orchestration planifiÃ©e (cron/Task Scheduler) + logs structurÃ©s
 
-Exposition métriques via API / export CSV
-
-
+Exposition mÃ©triques via API / export CSV
 
 
 
-## 👤 Auteur
-David Limoisin — Data Engineer
-Projet personnel orienté industrialisation, SQL/ETL, data quality, reproductibilité.
 
 
-=======
-# EnergyOps — Suivi conso électricité (CSV fournisseur → Postgres → dbt → Metabase)
+## ðŸ‘¤ Auteur
+David Limoisin â€” Data Engineer
+Projet personnel orientÃ© industrialisation, SQL/ETL, data quality, reproductibilitÃ©.
 
-Projet "EnergyOps" : ingestion d’un export fournisseur d’électricité (CSV), chargement en PostgreSQL, modélisation avec dbt, visualisation dans Metabase.
 
-![Dashboard EnergyOps](docs/screenshots/Dashboard.png)
-
-## Stack
-- Python (ingestion CSV)
-- PostgreSQL (stockage)
-- dbt (modélisation + tests)
-- Metabase (dashboard)
-- Docker Compose (reproductibilité)
-
-## Architecture (simplifiée)
-CSV fournisseur → Python ingest → `raw.supplier_meter_readings`  
-→ dbt staging → `analytics.stg_supplier_meter_readings`  
-→ dbt marts → `analytics.fct_energy_period`, `analytics.agg_energy_calendar_month_est`  
-→ Metabase (dashboards)
-
-## Pré-requis
-- Docker Desktop
-- Git
-- (Optionnel) Python 3.10+ si tu veux lancer l’ingestion en local
-
-## Démarrage rapide
-### 1) Lancer la stack
-```bash
-docker compose up -d
->>>>>>> 22ba5d8 (chore: ignore dbt artifacts and keep data/raw structure)
