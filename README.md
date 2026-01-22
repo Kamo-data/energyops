@@ -1,3 +1,5 @@
+![CI](https://github.com/Kamo-data/energyops/actions/workflows/ci.yml/badge.svg)
+
 # EnergyOps — Suivi conso électricité (CSV fournisseur → Postgres → dbt → Metabase)
 
 EnergyOps est une mini-stack data locale destinée à **ingérer des relevés d’électricité** (CSV fournisseur), les **historiser dans PostgreSQL**, les **modéliser avec dbt** et les **visualiser dans Metabase**.
@@ -231,3 +233,6 @@ Si Docker ne démarre pas :
 ## Auteur
 David Limoisin — Data Engineer
 Projet orienté industrialisation, SQL/ELT, data quality et reproductibilité.
+
+<!-- ci smoke -->
+
