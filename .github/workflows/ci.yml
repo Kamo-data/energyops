@@ -1,0 +1,63 @@
+﻿name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dbt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Docker versions
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Start Postgres
+        run: docker compose up -d postgres
+
+      - name: Wait for Postgres to be ready
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Waiting for Postgres..."
+          for i in {1..60}; do
+            if docker compose exec -T postgres pg_isready -U energy -d energyops >/dev/null 2>&1; then
+              echo "Postgres is ready."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Postgres did not become ready in time."
+          docker compose logs postgres
+          exit 1
+
+      - name: dbt build
+        run: docker compose run --rm dbt build
+
+      - name: dbt test
+        run: docker compose run --rm dbt test
+
+      - name: dbt docs generate
+        run: docker compose run --rm dbt docs generate
+
+      - name: Upload dbt artifacts (target/)
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-target
+          path: target/
+          if-no-files-found: ignore
+
+      - name: Teardown
+        if: always()
+        run: docker compose down -v
