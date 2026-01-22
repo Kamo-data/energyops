@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Python
+=======
+﻿# Python
+>>>>>>> 22ba5d8 (chore: ignore dbt artifacts and keep data/raw structure)
 .venv/
 __pycache__/
 *.py[cod]
