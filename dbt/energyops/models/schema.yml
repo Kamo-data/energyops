@@ -26,6 +26,9 @@ models:
         description: "Tarif HC utilisé pour l’estimation (€/kWh)."
       - name: cost_est_eur
         description: "Coût estimé total sur la période (en €)."
+      - name: has_negative_kwh
+        description: "Indique une anomalie (kWh négatif) : reset compteur ou incohérence source. Dans ce cas, cost_est_eur est neutralisé."
+
 
   - name: agg_energy_calendar_month_est
     description: "Agrégat mensuel : consommation et coût estimés par mois."

@@ -17,7 +17,6 @@ models:
         tests:
           - not_null
           - accepted_values:
-              arguments:
                 values: ["HP", "HC"]
 
       - name: kwh

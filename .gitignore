@@ -32,3 +32,5 @@ Thumbs.db
 
 # Docker override local (optionnel)
 docker-compose.override.yml
+
+*.bak
