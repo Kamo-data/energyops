@@ -1,0 +1,47 @@
+name: Publish dbt docs (GitHub Pages)
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start Postgres
+        run: docker compose up -d postgres
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..60}; do
+            docker compose exec -T postgres pg_isready -U energy -d energyops && exit 0
+            sleep 2
+          done
+          docker compose logs postgres
+          exit 1
+
+      - name: Generate dbt docs
+        run: docker compose run --rm dbt docs generate
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dbt/energyops/target
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/deploy-pages@v4
