@@ -17,8 +17,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Start Postgres
         run: docker compose up -d postgres
@@ -26,7 +28,7 @@ jobs:
       - name: Wait for Postgres
         run: |
           for i in {1..60}; do
-            docker compose exec -T postgres pg_isready -U energy -d energyops && exit 0
+            docker compose exec -T postgres pg_isready -U energy -d wattsup && exit 0
             sleep 2
           done
           docker compose logs postgres
@@ -38,10 +40,12 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dbt/energyops/target
+          path: dbt/wattsup/target
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
