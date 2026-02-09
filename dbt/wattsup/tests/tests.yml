@@ -1,0 +1,11 @@
+version: 2
+tests:
+  - name: test_cost_null_when_negative_kwh
+    description: >
+      Vérifie que le coût estimé est NULL lorsque la consommation est négative (reset compteur ou anomalie).
+  - name: test_no_negative_kwh_period
+    description: >
+      Assure qu’aucune période ne présente de kWh négatif.
+  - name: test_unique_stg_period_start_cadran
+    description: >
+      Vérifie l’unicité de la clé fonctionnelle (period_start, cadran) en staging.

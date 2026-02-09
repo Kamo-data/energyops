@@ -1,12 +1,14 @@
-![CI](https://github.com/Kamo-data/energyops/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Kamo-data/wattsup/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/Kamo-data/wattsup/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Kamo-data/wattsup/actions/workflows/ci.yml)
+[![Docs](https://github.com/Kamo-data/wattsup/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/Kamo-data/wattsup/actions/workflows/pages.yml)
 
-# EnergyOps — Suivi conso électricité (CSV fournisseur → Postgres → dbt → Metabase)
+# WattsUp — Suivi conso électricité (CSV fournisseur → Postgres → dbt → Metabase)
 
-EnergyOps est une mini-stack data locale destinée à **ingérer des relevés d’électricité** (CSV fournisseur), les **historiser dans PostgreSQL**, les **modéliser avec dbt** et les **visualiser dans Metabase**.
+WattsUp est une mini-stack data locale destinée à **ingérer des relevés d’électricité** (CSV fournisseur), les **historiser dans PostgreSQL**, les **modéliser avec dbt** et les **visualiser dans Metabase**.
 
 Objectif : disposer d’un pipeline simple, rejouable et maintenable, avec des contrôles de qualité de données adaptés aux cas réels (données manquantes, incohérences, reset compteur, etc.).
 
-![Dashboard EnergyOps](docs/screenshots/Dashboard.png)
+![Dashboard WattsUp](docs/screenshots/Dashboard.png)
 
 ---
 
@@ -89,7 +91,7 @@ Définis dans les `schema.yml`.
 - `not_null` : `period_start`, `period_end`
 
 ### 4.2 Tests SQL “métier” (custom tests)
-Fichiers dans `dbt/energyops/tests/`.
+Fichiers dans `dbt/wattsup/tests/`.
 
 1) **Unicité au bon grain**
 - règle : 1 relevé max par `period_start` et `cadran`
@@ -144,15 +146,15 @@ docker compose run --rm dbt test
 ## 6) Vérifications rapides (PostgreSQL)
 Compter les relevés raw :
 ```bash
-docker compose exec postgres psql -U energy -d energyops -c "select count(*) from raw.supplier_meter_readings;"
+docker compose exec postgres psql -U energy -d wattsup -c "select count(*) from raw.supplier_meter_readings;"
 ```
 Afficher les agrégats mensuels :
 ```bash
-docker compose exec postgres psql -U energy -d energyops -c "select * from analytics.agg_energy_calendar_month_est order by month desc limit 12;"
+docker compose exec postgres psql -U energy -d wattsup -c "select * from analytics.agg_energy_calendar_month_est order by month desc limit 12;"
 ```
 Inspecter le schéma du mart :
 ```bash
-docker compose exec postgres psql -U energy -d energyops -c "\d+ analytics.fct_energy_period"
+docker compose exec postgres psql -U energy -d wattsup -c "\d+ analytics.fct_energy_period"
 ```
 
 ## 7) Metabase
@@ -163,15 +165,15 @@ Ouvrir Metabase :
 Connexion PostgreSQL depuis Metabase :
 - Host : postgres
 - Port : 5432
-- Database : energyops
+- Database : wattsup
 - User : energy
 - Password : energy
 
 ## 8) Structure du repo
 - ingest/ : ingestion CSV (Python)
 - postgres/init.sql : init DB (schemas/tables)
-- dbt/energyops/ : projet dbt (models + tests)
-- dbt/energyops/tests/ : tests SQL custom
+- dbt/wattsup/ : projet dbt (models + tests)
+- dbt/wattsup/tests/ : tests SQL custom
 - docs/screenshots/ : captures Metabase
 - docker-compose.yml : stack Postgres + dbt + Metabase
 - scripts/run_all.ps1 : pipeline local (ingest + dbt)
@@ -213,7 +215,7 @@ docker compose run --rm dbt build --select fct_energy_period
 ### 9.4 PowerShell : chemin de script introuvable
 Le script `scripts/run_all.ps1` se trouve à la racine du repo.
 
-Si l’exécution se fait depuis `dbt/energyops/`, revenir à la racine avant de lancer :
+Si l’exécution se fait depuis `dbt/wattsup/`, revenir à la racine avant de lancer :
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\run_all.ps1
 ```
