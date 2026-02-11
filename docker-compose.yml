@@ -1,11 +1,5 @@
 services:
   postgres:
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U energy -d energyops"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
     image: postgres:16
     restart: unless-stopped
     environment:
