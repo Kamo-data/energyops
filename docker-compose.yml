@@ -1,26 +1,25 @@
 services:
   postgres:
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U energy -d energyops"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
     image: postgres:16
+    restart: unless-stopped
     environment:
       POSTGRES_USER: energy
       POSTGRES_PASSWORD: energy
-      POSTGRES_DB: energyops
+      POSTGRES_DB: wattsup
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U energy -d wattsup"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   metabase:
-    restart: unless-stopped
-    
     image: metabase/metabase:latest
+    restart: unless-stopped
     ports:
       - "3001:3000"
     depends_on:
@@ -30,10 +29,11 @@ services:
   dbt:
     image: ghcr.io/dbt-labs/dbt-postgres:1.9.latest
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     working_dir: /usr/app
     volumes:
-      - ./dbt/energyops:/usr/app
+      - ./dbt/wattsup:/usr/app
       - ./dbt/profiles.docker.yml:/root/.dbt/profiles.yml:ro
 
 volumes:
