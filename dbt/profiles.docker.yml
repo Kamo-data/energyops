@@ -1,12 +1,12 @@
-energyops:
+wattsup:
   target: dev
   outputs:
     dev:
       type: postgres
-      host: postgres          # IMPORTANT: depuis un container, on vise le service docker "postgres"
+      host: postgres
       user: energy
       password: energy
       port: 5432
-      dbname: energyops
+      dbname: wattsup
       schema: analytics
       threads: 4
