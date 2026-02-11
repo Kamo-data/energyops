@@ -1,0 +1,14 @@
+version: 2
+
+exposures:
+  - name: wattsup_dashboard
+    type: dashboard
+    maturity: low
+    description: >
+      Dashboard de suivi consommation et coût estimé.
+    depends_on:
+      - ref('fct_energy_period')
+      - ref('agg_energy_calendar_month_est')
+    owner:
+      name: "David Limoisin"
+      email: "exemple@domain.com"

@@ -2,7 +2,7 @@ name: "energyops"
 version: "1.0.0"
 config-version: 2
 
-profile: "energyops"
+profile: "wattsup"
 
 model-paths: ["models"]
 

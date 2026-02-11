@@ -2,8 +2,10 @@
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -32,7 +34,7 @@ jobs:
           set -euo pipefail
           echo "Waiting for Postgres..."
           for i in {1..60}; do
-            if docker compose exec -T postgres pg_isready -U energy -d energyops >/dev/null 2>&1; then
+            if docker compose exec -T postgres pg_isready -U energy -d wattsup >/dev/null 2>&1; then
               echo "Postgres is ready."
               exit 0
             fi
@@ -55,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dbt-target
-          path: target/
+          path: dbt/wattsup/target/
           if-no-files-found: ignore
 
       - name: Teardown
