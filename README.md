@@ -1,5 +1,4 @@
 
-![CI](https://github.com/Kamo-data/wattsup/actions/workflows/ci.yml/badge.svg)
 [![CI](https://github.com/Kamo-data/wattsup/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Kamo-data/wattsup/actions/workflows/ci.yml)
 [![Docs](https://github.com/Kamo-data/wattsup/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/Kamo-data/wattsup/actions/workflows/pages.yml)
 
